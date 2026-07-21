@@ -14,16 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      jatakas: {
+        Row: {
+          client_name: string | null
+          created_at: string
+          created_by: string | null
+          date_of_birth: string
+          father_name: string | null
+          id: string
+          jataka_number: string
+          mother_name: string | null
+          phone: string | null
+          place: string | null
+          status: Database["public"]["Enums"]["jataka_status"]
+          time_of_birth: string
+          updated_at: string
+        }
+        Insert: {
+          client_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          date_of_birth: string
+          father_name?: string | null
+          id?: string
+          jataka_number: string
+          mother_name?: string | null
+          phone?: string | null
+          place?: string | null
+          status?: Database["public"]["Enums"]["jataka_status"]
+          time_of_birth: string
+          updated_at?: string
+        }
+        Update: {
+          client_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          date_of_birth?: string
+          father_name?: string | null
+          id?: string
+          jataka_number?: string
+          mother_name?: string | null
+          phone?: string | null
+          place?: string | null
+          status?: Database["public"]["Enums"]["jataka_status"]
+          time_of_birth?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "astrologer"
+      jataka_status: "preparing" | "ready" | "collected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +248,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "astrologer"],
+      jataka_status: ["preparing", "ready", "collected"],
+    },
   },
 } as const
