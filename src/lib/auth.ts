@@ -1,64 +1,46 @@
 import { useEffect, useState } from "react";
-import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { getMe } from "@/api/jataka";
 
-export type AppRole = "admin" | "astrologer";
+export interface AuthUser {
+  id: string;
+  username: string;
+  full_name: string | null;
+  role: "admin" | "astrologer";
+}
 
 export interface AuthState {
   loading: boolean;
-  session: Session | null;
-  user: User | null;
-  role: AppRole | null;
-  isAdmin: boolean;
+  user: AuthUser | null;
+}
+
+let cached: AuthUser | null | undefined;
+
+export function setCachedUser(user: AuthUser | null) {
+  cached = user;
+}
+
+// Fetches the current user from the server and primes the cache used by useAuth.
+export async function loadUser(): Promise<AuthUser | null> {
+  cached = ((await getMe()) as AuthUser | null) ?? null;
+  return cached;
 }
 
 export function useAuth(): AuthState {
-  const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState<Session | null>(null);
-  const [role, setRole] = useState<AppRole | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(cached ?? null);
+  const [loading, setLoading] = useState(cached === undefined);
 
   useEffect(() => {
+    if (cached !== undefined) return;
     let mounted = true;
-    const { data: sub } = supabase.auth.onAuthStateChange((_ev, s) => {
+    void loadUser().then((u) => {
       if (!mounted) return;
-      setSession(s);
-      if (s?.user) {
-        void fetchRole(s.user.id).then((r) => mounted && setRole(r));
-      } else {
-        setRole(null);
-      }
-    });
-    void supabase.auth.getSession().then(async ({ data }) => {
-      if (!mounted) return;
-      setSession(data.session);
-      if (data.session?.user) {
-        const r = await fetchRole(data.session.user.id);
-        if (mounted) setRole(r);
-      }
-      if (mounted) setLoading(false);
+      setUser(u);
+      setLoading(false);
     });
     return () => {
       mounted = false;
-      sub.subscription.unsubscribe();
     };
   }, []);
 
-  return {
-    loading,
-    session,
-    user: session?.user ?? null,
-    role,
-    isAdmin: role === "admin",
-  };
-}
-
-async function fetchRole(userId: string): Promise<AppRole | null> {
-  const { data } = await supabase
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId)
-    .order("role", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-  return (data?.role as AppRole | undefined) ?? null;
+  return { loading, user };
 }

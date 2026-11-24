@@ -9,31 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAdvancedRouteImport } from './routes/_authenticated/advanced'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedJatakasNewRouteImport } from './routes/_authenticated/jatakas.new'
+import { Route as AuthenticatedRecentRouteImport } from './routes/_authenticated/recent'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedJatakasIndexRouteImport } from './routes/_authenticated/jatakas.index'
 import { Route as AuthenticatedJatakasIdRouteImport } from './routes/_authenticated/jatakas.$id'
+import { Route as AuthenticatedJatakasNewRouteImport } from './routes/_authenticated/jatakas.new'
+import { Route as AuthenticatedJatakasEditIdRouteImport } from './routes/_authenticated/jatakas.edit.$id'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
+const AuthenticatedAdvancedRoute = AuthenticatedAdvancedRouteImport.update({
+  id: '/advanced',
+  path: '/advanced',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -41,63 +47,137 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedJatakasNewRoute = AuthenticatedJatakasNewRouteImport.update({
-  id: '/jatakas/new',
-  path: '/jatakas/new',
+const AuthenticatedRecentRoute = AuthenticatedRecentRouteImport.update({
+  id: '/recent',
+  path: '/recent',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJatakasIndexRoute =
+  AuthenticatedJatakasIndexRouteImport.update({
+    id: '/jatakas/',
+    path: '/jatakas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedJatakasIdRoute = AuthenticatedJatakasIdRouteImport.update({
   id: '/jatakas/$id',
   path: '/jatakas/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJatakasNewRoute = AuthenticatedJatakasNewRouteImport.update({
+  id: '/jatakas/new',
+  path: '/jatakas/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJatakasEditIdRoute =
+  AuthenticatedJatakasEditIdRouteImport.update({
+    id: '/jatakas/edit/$id',
+    path: '/jatakas/edit/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/advanced': typeof AuthenticatedAdvancedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/recent': typeof AuthenticatedRecentRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/jatakas/$id': typeof AuthenticatedJatakasIdRoute
   '/jatakas/new': typeof AuthenticatedJatakasNewRoute
+  '/jatakas/': typeof AuthenticatedJatakasIndexRoute
+  '/jatakas/edit/$id': typeof AuthenticatedJatakasEditIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/advanced': typeof AuthenticatedAdvancedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/recent': typeof AuthenticatedRecentRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/jatakas/$id': typeof AuthenticatedJatakasIdRoute
   '/jatakas/new': typeof AuthenticatedJatakasNewRoute
+  '/jatakas': typeof AuthenticatedJatakasIndexRoute
+  '/jatakas/edit/$id': typeof AuthenticatedJatakasEditIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/advanced': typeof AuthenticatedAdvancedRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/recent': typeof AuthenticatedRecentRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/jatakas/$id': typeof AuthenticatedJatakasIdRoute
   '/_authenticated/jatakas/new': typeof AuthenticatedJatakasNewRoute
+  '/_authenticated/jatakas/': typeof AuthenticatedJatakasIndexRoute
+  '/_authenticated/jatakas/edit/$id': typeof AuthenticatedJatakasEditIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/advanced'
     | '/dashboard'
+    | '/recent'
+    | '/reports'
     | '/search'
+    | '/settings'
     | '/jatakas/$id'
     | '/jatakas/new'
+    | '/jatakas/'
+    | '/jatakas/edit/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/search' | '/jatakas/$id' | '/jatakas/new'
+  to:
+    | '/'
+    | '/auth'
+    | '/advanced'
+    | '/dashboard'
+    | '/recent'
+    | '/reports'
+    | '/search'
+    | '/settings'
+    | '/jatakas/$id'
+    | '/jatakas/new'
+    | '/jatakas'
+    | '/jatakas/edit/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/advanced'
     | '/_authenticated/dashboard'
+    | '/_authenticated/recent'
+    | '/_authenticated/reports'
     | '/_authenticated/search'
+    | '/_authenticated/settings'
     | '/_authenticated/jatakas/$id'
     | '/_authenticated/jatakas/new'
+    | '/_authenticated/jatakas/'
+    | '/_authenticated/jatakas/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -108,11 +188,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -122,18 +202,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/search': {
-      id: '/_authenticated/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof AuthenticatedSearchRouteImport
+    '/_authenticated/advanced': {
+      id: '/_authenticated/advanced'
+      path: '/advanced'
+      fullPath: '/advanced'
+      preLoaderRoute: typeof AuthenticatedAdvancedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -143,11 +223,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/jatakas/new': {
-      id: '/_authenticated/jatakas/new'
-      path: '/jatakas/new'
-      fullPath: '/jatakas/new'
-      preLoaderRoute: typeof AuthenticatedJatakasNewRouteImport
+    '/_authenticated/recent': {
+      id: '/_authenticated/recent'
+      path: '/recent'
+      fullPath: '/recent'
+      preLoaderRoute: typeof AuthenticatedRecentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/search': {
+      id: '/_authenticated/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthenticatedSearchRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jatakas/': {
+      id: '/_authenticated/jatakas/'
+      path: '/jatakas'
+      fullPath: '/jatakas/'
+      preLoaderRoute: typeof AuthenticatedJatakasIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/jatakas/$id': {
@@ -157,21 +265,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJatakasIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/jatakas/new': {
+      id: '/_authenticated/jatakas/new'
+      path: '/jatakas/new'
+      fullPath: '/jatakas/new'
+      preLoaderRoute: typeof AuthenticatedJatakasNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jatakas/edit/$id': {
+      id: '/_authenticated/jatakas/edit/$id'
+      path: '/jatakas/edit/$id'
+      fullPath: '/jatakas/edit/$id'
+      preLoaderRoute: typeof AuthenticatedJatakasEditIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdvancedRoute: typeof AuthenticatedAdvancedRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedRecentRoute: typeof AuthenticatedRecentRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedJatakasIdRoute: typeof AuthenticatedJatakasIdRoute
   AuthenticatedJatakasNewRoute: typeof AuthenticatedJatakasNewRoute
+  AuthenticatedJatakasIndexRoute: typeof AuthenticatedJatakasIndexRoute
+  AuthenticatedJatakasEditIdRoute: typeof AuthenticatedJatakasEditIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdvancedRoute: AuthenticatedAdvancedRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedRecentRoute: AuthenticatedRecentRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedJatakasIdRoute: AuthenticatedJatakasIdRoute,
   AuthenticatedJatakasNewRoute: AuthenticatedJatakasNewRoute,
+  AuthenticatedJatakasIndexRoute: AuthenticatedJatakasIndexRoute,
+  AuthenticatedJatakasEditIdRoute: AuthenticatedJatakasEditIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -185,3 +319,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

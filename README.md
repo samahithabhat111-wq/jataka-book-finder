@@ -494,3 +494,41 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+### Create your first user
+
+There is no public sign-up. Create the first user from the command line (works for local and for Turso):
+
+```sh
+npm run create-user -- admin "YourPassword" "Your Name"
+```
+
+After that, you can add/reset/delete users from **Settings** in the app. Everyone who can sign in has full access.
+
+### Database
+
+- **Local**: with no env vars set, a SQLite file is created at `data/jataka.db` (git-ignored).
+- **Production (Netlify)**: uses [Turso](https://turso.tech) (hosted SQLite). Netlify functions have no persistent disk, so a local file can't be used there.
+
+### Deploy to Netlify
+
+1. Create a Turso database and token: `turso db create jataka` then `turso db show jataka --url` and `turso db tokens create jataka`.
+2. In Netlify → Site configuration → Environment variables, add `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` (see `.env.example`).
+3. Deploy (build settings come from `netlify.toml`).
+4. Create the first user against Turso from your machine:
+   `TURSO_DATABASE_URL=... TURSO_AUTH_TOKEN=... npm run create-user -- admin "YourPassword"`
+   (PowerShell: set `$env:TURSO_DATABASE_URL` / `$env:TURSO_AUTH_TOKEN` first.)
+
+## Android app (no web hosting needed)
+
+The Android app is the same UI bundled inside the APK (Capacitor). It talks directly to the Turso cloud database, so every phone that installs it sees the same records. Records you have opened are cached on the phone and stay readable offline; adding/editing needs internet.
+
+Roles: **admin** can add/edit/delete and manage users; **astrologer** can only search and view. Create users with a role in **Settings** (admin only).
+
+1. Create a Turso database and token (see above), then copy your local data once:
+   `$env:TURSO_DATABASE_URL="libsql://..."; $env:TURSO_AUTH_TOKEN="..."; npm run migrate-to-turso`
+2. Put `VITE_TURSO_DATABASE_URL` and `VITE_TURSO_AUTH_TOKEN` in `.env.local` (git-ignored; see `.env.example`). They are baked into the APK, so use a dedicated token.
+3. Build: `npm run android:sync`, then either
+   - `npm run android:open` and use Android Studio → Build → Build APK(s), or
+   - push to GitHub and run the **Build Android APK** workflow (add the two `VITE_TURSO_*` values as repository secrets); download `app-debug.apk` from the run artifacts.
+4. Send the APK to any phone and install it (allow "install unknown apps").

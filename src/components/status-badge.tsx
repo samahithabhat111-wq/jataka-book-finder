@@ -1,26 +1,30 @@
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, PackageCheck } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type JatakaStatus = "preparing" | "ready" | "collected";
 
-const map: Record<JatakaStatus, { label: string; icon: LucideIcon; className: string }> = {
-  preparing: { label: "Preparing", icon: Clock, className: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-900/30 dark:text-amber-200" },
-  ready: { label: "Ready", icon: CheckCircle2, className: "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-200" },
-  collected: { label: "Collected", icon: PackageCheck, className: "bg-slate-100 text-slate-600 border-slate-300 dark:bg-slate-800/50 dark:text-slate-400" },
+export const STATUS_META: Record<JatakaStatus, { label: string; dot: string; text: string }> = {
+  ready: { label: "Ready", dot: "bg-emerald-500", text: "text-emerald-700" },
+  preparing: { label: "Preparing", dot: "bg-amber-400", text: "text-amber-700" },
+  collected: { label: "Collected", dot: "bg-slate-900", text: "text-slate-600" },
 };
 
-export function StatusBadge({ status, faded }: { status: JatakaStatus; faded?: boolean }) {
-  const cfg = map[status];
-  const Icon = cfg.icon;
+export function StatusDot({ status, className, decorative }: { status: JatakaStatus; className?: string; decorative?: boolean }) {
   return (
-    <Badge variant="outline" className={`${cfg.className} ${faded ? "opacity-60" : ""} gap-1 font-medium`}>
-      <Icon className="h-3 w-3" /> {cfg.label}
-    </Badge>
+    <span
+      {...(decorative ? { "aria-hidden": true } : { "aria-label": STATUS_META[status].label })}
+      className={cn("inline-block h-3 w-3 shrink-0 rounded-full", STATUS_META[status].dot, className)}
+    />
   );
 }
 
-export function StatusIcon({ status }: { status: JatakaStatus }) {
-  const Icon = map[status].icon;
-  return <Icon className={`h-4 w-4 ${status === "collected" ? "opacity-60" : ""}`} />;
+export function StatusBadge({ status, className }: { status: JatakaStatus; className?: string }) {
+  const m = STATUS_META[status];
+  return (
+    <span className={cn("inline-flex items-center gap-2 text-sm font-medium", m.text, className)}>
+      <StatusDot status={status} decorative className="h-2.5 w-2.5" />
+      {m.label}
+    </span>
+  );
 }
+
+export const StatusIcon = StatusDot;
